@@ -2,12 +2,15 @@ package com.example.lab2_20212607;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -20,6 +23,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.lab2_20212607.bean.Resultado;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +47,10 @@ public class MainActivity2 extends AppCompatActivity {
 
 
     private List<Resultado> resultados;
+    private long startTime;
+    private long endTime;
+    private long elapsed;
+
 
 
     @Override
@@ -50,10 +59,15 @@ public class MainActivity2 extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main2);
 
+        Intent intent = getIntent();
+        String nombreJugador = intent.getStringExtra("nombreJugador");
+
+
         palabras = getResources().getStringArray(R.array.palabras);
         palabraLayout = findViewById(R.id.palabraLayout);
         gridView = findViewById(R.id.letras);
         random = new Random();
+        resultados = new ArrayList<>();
 
         partes = new ImageView[sizeParts];
         partes[0] = findViewById(R.id.head);
@@ -66,6 +80,36 @@ public class MainActivity2 extends AppCompatActivity {
 
         jugar();
 
+        Button nuevoJuego = findViewById(R.id.nuevoJuego);
+        nuevoJuego.setOnClickListener(view -> {
+            if (numCorr < numChars) { //No terminó el juego
+                Resultado resultado = new Resultado();
+                resultado.setCancelo(true);
+                resultado.setTiempo(1);
+                resultados.add(resultado);
+            } else { //GANÓ O PERDIÓ
+                Resultado resultado = new Resultado();
+                resultado.setCancelo(false);
+                resultado.setTiempo(elapsed);
+                resultados.add(resultado);
+            }
+
+            jugar(); // Solo se llama una vez
+        });
+
+        //Ir a estadísticas
+
+        ImageButton estadisticas = findViewById(R.id.estadisticas);
+
+        estadisticas.setOnClickListener(view -> {
+            Intent intent1 = new Intent(MainActivity2.this, MainActivity3.class);
+            intent1.putExtra("listaResultados", (CharSequence) resultados);
+            intent1.putExtra("nombreJugador", nombreJugador);
+            startActivity(intent1);
+        });
+
+
+
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main2), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -76,6 +120,11 @@ public class MainActivity2 extends AppCompatActivity {
 
     private void jugar(){
 
+        //Controlar el tiempo
+        startTime = System.currentTimeMillis();
+        elapsed = 0;
+
+
         String nuevaPalabra=palabras[random.nextInt(palabras.length)];
 
         while (nuevaPalabra.equals(palabraActual)){
@@ -84,6 +133,8 @@ public class MainActivity2 extends AppCompatActivity {
         palabraActual=nuevaPalabra;
 
         charViews = new TextView[palabraActual.length()];
+
+        palabraLayout.removeAllViews();
 
         for (int i=0; i<palabraActual.length();i++){
             charViews[i] = new TextView(this);
@@ -101,9 +152,9 @@ public class MainActivity2 extends AppCompatActivity {
         parteActual=0;
         numChars=palabraActual.length();
 
-        resultados = new ArrayList<>();
-
-
+        for(int i = 0; i < sizeParts; i++){
+            partes[i].setVisibility(View.INVISIBLE);
+        }
 
     }
 
@@ -126,48 +177,31 @@ public class MainActivity2 extends AppCompatActivity {
 
         if(correct){
             if(numCorr == numChars){ //Ganar el juego
-                disableAllButtons();
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("Win");
-                builder.setMessage("Felicidades");
-                builder.setPositiveButton("Jugar de Nuevo", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        MainActivity2.this.jugar();
-                    }
-                });
 
-                builder.setPositiveButton("Salir", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        MainActivity2.this.finish();
-                    }
-                });
-                builder.show();
+                endTime = System.currentTimeMillis();
+                long timeElapsed = endTime - startTime; // Tiempo en milisegundos
+                elapsed = timeElapsed / 1000;
+
+                disableAllButtons();
+
+                TextView resultado = findViewById(R.id.Resultado);
+                resultado.setText("Ganó / Terminó en " + elapsed +" s");
+
             }
         } else if (parteActual < sizeParts) { //Tecla errónea
             partes[parteActual].setVisibility(View.VISIBLE);
             parteActual++;
         }
         else { //Perder el juego
-            disableAllButtons();
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Perdiste");
-            builder.setMessage("Lose");
-            builder.setPositiveButton("Jugar de Nuevo", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    MainActivity2.this.jugar();
-                }
-            });
 
-            builder.setPositiveButton("Salir", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    MainActivity2.this.finish();
-                }
-            });
-            builder.show();
+            endTime = System.currentTimeMillis();
+            long timeElapsed = endTime - startTime; // Tiempo en milisegundos
+            elapsed = timeElapsed / 1000;
+
+            disableAllButtons();
+
+            TextView resultado = findViewById(R.id.Resultado);
+            resultado.setText("Perdió / Terminó en " + elapsed +" s");
         }
 
 

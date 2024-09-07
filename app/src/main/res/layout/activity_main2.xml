@@ -14,13 +14,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appbar"
 
             android:layout_width="match_parent"
             android:layout_height="63dp"
-            android:orientation="vertical"
-            android:padding="10dp"
+            android:padding="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -28,27 +28,42 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.002">
 
-            <ImageView
-                android:id="@+id/imageView3"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_gravity="end"
-                android:layout_marginRight="10dp"
-                app:srcCompat="@drawable/baseline_arrow_back_24" />
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
 
-            <TextView
-                android:layout_width="275dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="20dp"
-                android:text="TeleGame"
-                android:textSize="24sp" />
+                app:titleTextColor="@android:color/white"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-            <ImageView
-                android:id="@+id/imageView4"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_gravity="end"
-                app:srcCompat="@drawable/baseline_query_stats_24" />
+                <ImageButton
+                    android:id="@+id/retroceder"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@color/white"
+                    app:srcCompat="@drawable/baseline_arrow_back_24" />
+
+                <TextView
+                    android:layout_width="275dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:text="TeleGame"
+                    android:textSize="24sp" />
+
+                <ImageButton
+                    android:id="@+id/estadisticas"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="20dp"
+                    android:background="@color/white"
+                    app:srcCompat="@drawable/baseline_query_stats_24" />
+
+            </androidx.appcompat.widget.Toolbar>
+
+
+
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -69,11 +84,11 @@
 
                 <ImageView
                     android:id="@+id/antennagame"
-                    android:layout_width="280dp"
-                    android:layout_height="280dp"
-                    android:layout_marginBottom="40dp"
+                    android:layout_width="258dp"
+                    android:layout_height="260dp"
+                    android:layout_marginTop="16dp"
                     android:cropToPadding="true"
-                    app:srcCompat="@drawable/antenna_sinfondo" />
+                    android:src="@drawable/antenna" />
 
                 <ImageView
                     android:id="@+id/head"
@@ -151,7 +166,36 @@
                 android:stretchMode="columnWidth"
                 android:verticalSpacing="5dp"
                 android:horizontalSpacing="5dp"/>
-            
+
+            <TextView
+                android:id="@+id/Resultado"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="24sp"
+
+                android:layout_marginBottom="5dp"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+                <Button
+                    android:id="@+id/nuevoJuego"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Nuevo Juego"
+                    android:backgroundTint="@color/black"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
             
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,14 +4,15 @@ import java.io.Serializable;
 
 public class Resultado implements Serializable {
 
-    private int tiempo;
+    private long tiempo;
     private boolean cancelo;
 
-    public int getTiempo() {
+
+    public long getTiempo() {
         return tiempo;
     }
 
-    public void setTiempo(int tiempo) {
+    public void setTiempo(long tiempo) {
         this.tiempo = tiempo;
     }
 
