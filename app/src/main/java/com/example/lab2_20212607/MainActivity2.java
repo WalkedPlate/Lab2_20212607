@@ -49,6 +49,7 @@ public class MainActivity2 extends AppCompatActivity {
     private ImageView[] partes;
     private int sizeParts=6;
     private int parteActual;
+    private boolean terminoJuego;
 
 
     private List<Resultado> resultados;
@@ -91,7 +92,7 @@ public class MainActivity2 extends AppCompatActivity {
             TextView resultadoTextView = findViewById(R.id.Resultado);
             resultadoTextView.setText("");
 
-            if (numCorr < numChars) { //No terminó el juego
+            if (!terminoJuego) { //No terminó el juego
                 Resultado resultado = new Resultado();
                 resultado.setCancelo(true);
                 resultado.setTiempo(1);
@@ -138,6 +139,8 @@ public class MainActivity2 extends AppCompatActivity {
     }
 
     private void jugar(){
+
+        terminoJuego = false;
 
         //Controlar el tiempo
         startTime = System.currentTimeMillis();
@@ -197,6 +200,7 @@ public class MainActivity2 extends AppCompatActivity {
         if(correct){
             if(numCorr == numChars){ //Ganar el juego
 
+                terminoJuego = true;
                 endTime = System.currentTimeMillis();
                 long timeElapsed = endTime - startTime; // Tiempo en milisegundos
                 elapsed = timeElapsed / 1000;
@@ -219,6 +223,7 @@ public class MainActivity2 extends AppCompatActivity {
         }
         else { //Perder el juego
 
+            terminoJuego = true;
             endTime = System.currentTimeMillis();
             long timeElapsed = endTime - startTime; // Tiempo en milisegundos
             elapsed = timeElapsed / 1000;
