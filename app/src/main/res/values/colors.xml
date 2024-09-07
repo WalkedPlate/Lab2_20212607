@@ -1,5 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+
+
+    <!-- Colores Primarios -->
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+
+
+    <!-- Colores de Fondo y Texto -->
+    <color name="colorBackground">#FFFFFF</color>
+    <color name="colorTextPrimary">#000000</color>
+    <color name="colorTextSecondary">#757575</color>
+    <color name="colorTextHint">#B0B0B0</color>
+
+    <!-- Colores para Botones y Elementos Interactivos -->
+    <color name="colorButton">#FF5722</color>
+    <color name="colorButtonText">#FFFFFF</color>
+    <color name="colorButtonDisabled">#BDBDBD</color>
+    <color name="colorButtonPressed">#E64A19</color>
+
+    <!-- Colores para Borde y Divisiones -->
+    <color name="colorBorder">#DDDDDD</color>
+    <color name="colorDivider">#CCCCCC</color>
+
+    <!-- Colores para Fondos y Tarjetas -->
+    <color name="colorCardBackground">#F5F5F5</color>
+    <color name="colorChipBackground">#E1E1E1</color>
+    <color name="colorChipText">#000000</color>
+
+    <!-- Colores para Estados y Mensajes -->
+    <color name="colorError">#B00020</color>
+    <color name="colorWarning">#FFA000</color>
+    <color name="colorSuccess">#4CAF50</color>
+    <color name="colorInfo">#2196F3</color>
+
+    <!-- Colores para Indicadores y Otros -->
+    <color name="colorIndicatorSuccess">#4CAF50</color>
+    <color name="colorIndicatorError">#F44336</color>
+    <color name="colorIndicatorWarning">#FF9800</color>
+    <color name="colorIndicatorInfo">#2196F3</color>
+
+    <!-- Colores para Gradientes -->
+    <color name="colorGradientStart">#FF8C00</color>
+    <color name="colorGradientEnd">#FF6347</color>
+
+    <!-- Colores para Modales y Overlays -->
+    <color name="colorModalBackground">#80000000</color>
+    <color name="colorModalForeground">#FFFFFF</color>
 </resources>

@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +15,11 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -26,6 +30,7 @@ import com.example.lab2_20212607.bean.Resultado;
 
 import org.w3c.dom.Text;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -82,15 +87,14 @@ public class MainActivity2 extends AppCompatActivity {
 
         Button nuevoJuego = findViewById(R.id.nuevoJuego);
         nuevoJuego.setOnClickListener(view -> {
+
+            TextView resultadoTextView = findViewById(R.id.Resultado);
+            resultadoTextView.setText("");
+
             if (numCorr < numChars) { //No terminó el juego
                 Resultado resultado = new Resultado();
                 resultado.setCancelo(true);
                 resultado.setTiempo(1);
-                resultados.add(resultado);
-            } else { //GANÓ O PERDIÓ
-                Resultado resultado = new Resultado();
-                resultado.setCancelo(false);
-                resultado.setTiempo(elapsed);
                 resultados.add(resultado);
             }
 
@@ -103,12 +107,27 @@ public class MainActivity2 extends AppCompatActivity {
 
         estadisticas.setOnClickListener(view -> {
             Intent intent1 = new Intent(MainActivity2.this, MainActivity3.class);
-            intent1.putExtra("listaResultados", (CharSequence) resultados);
+            intent1.putExtra("listaResultados", (Serializable) resultados);
             intent1.putExtra("nombreJugador", nombreJugador);
             startActivity(intent1);
         });
 
+        // Retroceder botón
+        ImageButton retroceder = findViewById(R.id.retroceder);
+        retroceder.setOnClickListener(v -> {
+            finish();
+        });
 
+
+        ActivityResultLauncher<Intent> launcher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    //aquí llegamos luego del setResult(RESULT_OK,intent);
+                    if (result.getResultCode() == RESULT_OK) {
+                        jugar();
+                    }
+                }
+        );
 
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main2), (v, insets) -> {
@@ -182,10 +201,16 @@ public class MainActivity2 extends AppCompatActivity {
                 long timeElapsed = endTime - startTime; // Tiempo en milisegundos
                 elapsed = timeElapsed / 1000;
 
+                Resultado resultado = new Resultado();
+                resultado.setCancelo(false);
+                resultado.setTiempo(elapsed);
+                resultados.add(resultado);
+                //Log.d("resultado",String.valueOf(resultado.getTiempo()));
+
                 disableAllButtons();
 
-                TextView resultado = findViewById(R.id.Resultado);
-                resultado.setText("Ganó / Terminó en " + elapsed +" s");
+                TextView resultadoTextView = findViewById(R.id.Resultado);
+                resultadoTextView.setText("Ganó / Terminó en " + elapsed +" s");
 
             }
         } else if (parteActual < sizeParts) { //Tecla errónea
@@ -198,10 +223,17 @@ public class MainActivity2 extends AppCompatActivity {
             long timeElapsed = endTime - startTime; // Tiempo en milisegundos
             elapsed = timeElapsed / 1000;
 
+            Resultado resultado = new Resultado();
+            resultado.setCancelo(false);
+            resultado.setTiempo(elapsed);
+            resultados.add(resultado);
+            //Log.d("resultado",String.valueOf(resultado.getTiempo()));
+            //Log.d("lista",String.valueOf(resultados.get(0).getTiempo()));
+
             disableAllButtons();
 
-            TextView resultado = findViewById(R.id.Resultado);
-            resultado.setText("Perdió / Terminó en " + elapsed +" s");
+            TextView resultadoTextView = findViewById(R.id.Resultado);
+            resultadoTextView.setText("Perdió / Terminó en " + elapsed +" s");
         }
 
 
