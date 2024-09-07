@@ -22,7 +22,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.lab2_20212607.bean.Jugador;
 
-public class MainActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity {
 
     private TextView tituloTelegame;
 
@@ -65,12 +65,12 @@ public class MainActivity extends AppCompatActivity {
             // Aseguramos que hay texto en el campo
             if (!nombreJugador.isEmpty()) {
                 // Ir al juego
-                Intent intent = new Intent(MainActivity.this, MainActivity2.class);
+                Intent intent = new Intent(HomeActivity.this, TeleGameActivity.class);
                 intent.putExtra("nombreJugador", nombreJugador);
                 startActivity(intent);
             } else {
                 // Adicionalmente mostramos un mensaje si no hay texto ingresado (medida extra)
-                Toast.makeText(MainActivity.this, "Por favor ingrese su nombre", Toast.LENGTH_SHORT).show();
+                Toast.makeText(HomeActivity.this, "Por favor ingrese su nombre", Toast.LENGTH_SHORT).show();
             }
 
 
@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         EditText editText = findViewById(R.id.nombreEntrada);
         String nombreJugador= editText.getText().toString();
         Jugador jugador = new Jugador(nombreJugador);
-        Intent intent = new Intent(this, MainActivity2.class);
+        Intent intent = new Intent(this, TeleGameActivity.class);
         //se envia un objeto
         intent.putExtra("jugador", jugador);
         startActivity(intent);

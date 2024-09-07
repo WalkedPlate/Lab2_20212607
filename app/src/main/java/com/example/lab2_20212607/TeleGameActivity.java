@@ -1,12 +1,11 @@
 package com.example.lab2_20212607;
 
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -15,27 +14,27 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AlertDialog;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.lab2_20212607.bean.Resultado;
 
-import org.w3c.dom.Text;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class MainActivity2 extends AppCompatActivity {
+public class TeleGameActivity extends AppCompatActivity {
+
+    private String nombreJugador;
 
     private String[] palabras;
     private Random random;
@@ -65,8 +64,20 @@ public class MainActivity2 extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main2);
 
+
+        // botón de retroceso
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        // Habilitar el botón
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        // Acción para el botón
+        toolbar.setNavigationOnClickListener(v -> finish());
+
         Intent intent = getIntent();
-        String nombreJugador = intent.getStringExtra("nombreJugador");
+        nombreJugador = intent.getStringExtra("nombreJugador");
 
 
         palabras = getResources().getStringArray(R.array.palabras);
@@ -99,15 +110,15 @@ public class MainActivity2 extends AppCompatActivity {
                 resultados.add(resultado);
             }
 
-            jugar(); // Solo se llama una vez
+            jugar();
         });
 
         //Ir a estadísticas
 
-        ImageButton estadisticas = findViewById(R.id.estadisticas);
+        /*ImageButton estadisticas = findViewById(R.id.estadisticas);
 
         estadisticas.setOnClickListener(view -> {
-            Intent intent1 = new Intent(MainActivity2.this, MainActivity3.class);
+            Intent intent1 = new Intent(TeleGameActivity.this, EstadisticasActivity.class);
             intent1.putExtra("listaResultados", (Serializable) resultados);
             intent1.putExtra("nombreJugador", nombreJugador);
             startActivity(intent1);
@@ -119,6 +130,8 @@ public class MainActivity2 extends AppCompatActivity {
             finish();
         });
 
+
+         */
 
         ActivityResultLauncher<Intent> launcher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -138,6 +151,27 @@ public class MainActivity2 extends AppCompatActivity {
         });
     }
 
+    // App Bar
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_estadisticas, menu);
+        return true;
+    }
+
+    // Ir a Estadisticas
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.stats) {
+            Intent intent1 = new Intent(TeleGameActivity.this, EstadisticasActivity.class);
+            intent1.putExtra("listaResultados", (Serializable) resultados);
+            intent1.putExtra("nombreJugador", nombreJugador);
+            startActivity(intent1);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
     private void jugar(){
 
         terminoJuego = false;
@@ -147,6 +181,7 @@ public class MainActivity2 extends AppCompatActivity {
         elapsed = 0;
 
 
+        //Seleccionar la palabra
         String nuevaPalabra=palabras[random.nextInt(palabras.length)];
 
         while (nuevaPalabra.equals(palabraActual)){
@@ -154,6 +189,7 @@ public class MainActivity2 extends AppCompatActivity {
         }
         palabraActual=nuevaPalabra;
 
+        //Vista de la palabra en la pantalla
         charViews = new TextView[palabraActual.length()];
 
         palabraLayout.removeAllViews();
@@ -168,8 +204,10 @@ public class MainActivity2 extends AppCompatActivity {
             palabraLayout.addView(charViews[i]);
 
         }
+        //Usamos un adaptador para generar los botones de letras
         adapter = new LetterAdapter(this);
         gridView.setAdapter(adapter);
+
         numCorr=0;
         parteActual=0;
         numChars=palabraActual.length();

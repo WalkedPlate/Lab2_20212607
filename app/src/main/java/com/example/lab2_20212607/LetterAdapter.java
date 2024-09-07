@@ -13,10 +13,13 @@ public class LetterAdapter extends BaseAdapter {
     private LayoutInflater letrasInf;
 
     public LetterAdapter(Context context){
+        //26 letras del abecedario
         letras = new String[26];
+        //Asignamos la letra a cada posición del arreglo
         for(int i=0; i<letras.length;i++){
             letras[i]="" + (char)(i+'A');
         }
+        //Inflamos el layout de letras
         letrasInf = LayoutInflater.from(context);
 
     }

@@ -2,30 +2,45 @@ package com.example.lab2_20212607;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.lab2_20212607.bean.Resultado;
 
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.List;
 
-public class MainActivity3 extends AppCompatActivity {
+public class EstadisticasActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main3);
+
+        // botón de retroceso
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        // Habilitar el botón
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        // Acción para el botón
+        toolbar.setNavigationOnClickListener(v -> finish());
+
 
         Intent intent = getIntent();
         String nombreJugador = intent.getStringExtra("nombreJugador");
@@ -65,10 +80,13 @@ public class MainActivity3 extends AppCompatActivity {
 
 
         // Retroceder botón
+        /*
         ImageButton retroceder = findViewById(R.id.retroceder);
         retroceder.setOnClickListener(v -> {
             finish();
         });
+
+         */
 
 
 
@@ -78,4 +96,13 @@ public class MainActivity3 extends AppCompatActivity {
             return insets;
         });
     }
+
+    // No inflamos el App Bar en esta vista (no mostramos el botón)
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_estadisticas, menu);
+        return true;
+    }
+
+
 }
