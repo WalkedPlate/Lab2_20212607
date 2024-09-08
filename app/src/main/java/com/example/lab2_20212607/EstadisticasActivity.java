@@ -98,11 +98,14 @@ public class EstadisticasActivity extends AppCompatActivity {
     }
 
     // No inflamos el App Bar en esta vista (no mostramos el botón)
-    @Override
+
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_estadisticas, menu);
         return true;
     }
+
+     */
 
 
 }
